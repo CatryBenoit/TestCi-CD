@@ -1,0 +1,16 @@
+stages:
+  - mirror
+
+push_to_github:
+  stage: mirror
+  image:
+    name: alpine/git:latest
+    entrypoint: [""]
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"          # historique complet, nécessaire pour pousser
+  rules:
+    - if: $CI_COMMIT_BRANCH
+  script:
+    - git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/CatryBenoit/TestCi-CD.git"
+    - git push github "HEAD:refs/heads/${CI_COMMIT_BRANCH}"
